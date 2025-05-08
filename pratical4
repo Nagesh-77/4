@@ -1,0 +1,48 @@
+package YouTube;
+
+import java.sql.*;
+
+public class DemoClass {
+
+    public static void main(String[] args) throws Exception {
+        String url = "jdbc:mysql://localhost:3306/aliens";
+        String uname = "root";
+        String pass = "nagesh123@";
+
+        // Load JDBC driver
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection con = DriverManager.getConnection(url, uname, pass);
+
+        // Step 1: Insert data
+        String insertQuery = "INSERT INTO students (userid, username) VALUES (?, ?)";
+        PreparedStatement insertStmt = con.prepareStatement(insertQuery);
+        insertStmt.setInt(1, 9); // Change userid as needed
+        insertStmt.setString(2, "Abhi"); // Change username as needed
+        int rowsInserted = insertStmt.executeUpdate();
+        System.out.println(rowsInserted + " row(s) inserted.");
+
+        // Step 2: Retrieve data
+        String selectQuery = "SELECT * FROM students";
+        Statement selectStmt = con.createStatement();
+        ResultSet rs = selectStmt.executeQuery(selectQuery);
+
+        System.out.println("Current records in students table:");
+        while (rs.next()) {
+            int id = rs.getInt("userid");
+            String name = rs.getString("username");
+            System.out.println("ID: " + id + ", Name: " + name);
+        }
+
+        // Clean up
+        rs.close();
+        insertStmt.close();
+        selectStmt.close();
+        con.close();
+    }
+}
+
+
+---------------
+
+requires java.sql;
+    requires mysql.connector.java;
